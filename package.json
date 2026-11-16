@@ -1,6 +1,6 @@
 {
   "name": "ha-messenger-card",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Household messenger card for Home Assistant",
   "type": "module",
   "private": true,

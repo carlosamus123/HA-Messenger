@@ -1,11 +1,11 @@
-/*! HA Messenger 1.0.0 | MIT | https://github.com/carlosamus123/HA-Messenger */
+/*! HA Messenger 1.0.1 | MIT | https://github.com/carlosamus123/HA-Messenger */
 (() => {
 'use strict';
 if (customElements.get('ha-messenger-card')) return;
 // ---------------------------------------------------------------- shared helpers
 const TAG = 'ha-messenger-card';
 const EDITOR_TAG = 'ha-messenger-card-editor';
-const VERSION = '1.0.0';
+const VERSION = '1.0.1';
 const LS = 'ha-messenger';
 
 const DEFAULT_EMOJIS = ['❤️', '😂', '😮', '😢', '👍', '🎉'];
