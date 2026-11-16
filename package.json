@@ -8,5 +8,11 @@
   "scripts": {
     "build": "node build.mjs",
     "test": "node build.mjs && node test/run.mjs"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/carlosamus123/HA-Messenger"
+  },
+  "homepage": "https://github.com/carlosamus123/HA-Messenger",
+  "funding": "https://ko-fi.com/northstarcreations"
 }
