@@ -1,0 +1,59 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>body{margin:0;padding:10px;background:#111;font-family:sans-serif;color:#eee} #ed{background:#fafafa;color:#222;padding:12px;margin-top:10px;--divider-color:#ddd;--secondary-text-color:#666;--primary-color:#03a9f4;--card-background-color:#fff;--primary-text-color:#222;--secondary-background-color:#f3f3f3}</style>
+<script>
+// --- minimal stand-ins for Home Assistant's own elements
+customElements.define('ha-card', class extends HTMLElement {});
+customElements.define('ha-icon', class extends HTMLElement {});
+customElements.define('ha-entity-picker', class extends HTMLElement {});
+customElements.define('ha-form', class extends HTMLElement {
+  set data(v) { this._d = v; this.render(); } get data() { return this._d; }
+  set schema(v) { this._s = v; this.render(); }
+  flat(s) { return s.flatMap(x => x.type === 'grid' ? this.flat(x.schema) : [x]); }
+  render() {
+    if (!this._s || !this._d) return;
+    this.innerHTML = this.flat(this._s).map(f => `<label style="display:block;font-size:12px">${this.computeLabel ? this.computeLabel(f) : f.name}<input data-n="${f.name}" value="${String(this._d[f.name] ?? '').replace(/"/g,'&quot;')}"></label>`).join('');
+  }
+  change(name, value) { this.dispatchEvent(new CustomEvent('value-changed', {detail: {value: {...this._d, [name]: value}}})); }
+});
+window.calls = [];
+const now = new Date();
+window.makeHass = (opts = {}) => {
+  const store = window.store = window.store || {items: [], subs: [], n: 0};
+  const emit = () => store.subs.forEach(cb => cb({items: JSON.parse(JSON.stringify(store.items))}));
+  const states = {
+    'person.carl': {state: 'home', attributes: {friendly_name: 'Carl Hussain', user_id: 'u-carl', device_trackers: ['device_tracker.carls_phone']}},
+    'person.claire': {state: opts.claireAway ? 'not_home' : 'home', attributes: {friendly_name: 'Claire', user_id: 'u-claire', device_trackers: ['device_tracker.cph2307']}},
+    'person.phoebe': {state: 'home', attributes: {friendly_name: 'Phoebe', user_id: 'u-phoebe'}},
+    'media_player.office': {state: 'idle', attributes: {}},
+    'media_player.kitchen': {state: 'idle', attributes: {}},
+    'media_player.phoebe': {state: 'unavailable', attributes: {}},
+    'tts.google_translate_en_com': {state: 'unknown', attributes: {}},
+    'todo.messenger': {state: '0', attributes: {supported_features: 127}},
+    'todo.shopping': {state: '3', attributes: {supported_features: 127}},
+  };
+  if (opts.noStorage) delete states['todo.messenger'];
+  const services = {todo: {add_item: {}, remove_item: {}, update_item: {}, get_items: {}}, tts: {speak: {}},
+    notify: {mobile_app_carls_phone: {}, mobile_app_cph2307: {}, persistent_notification: {}}, input_text: {set_value: {}}};
+  if (opts.chime) services.chime_tts = {say: {}};
+  return {
+    user: {id: opts.user || 'u-carl', name: opts.userName || 'Carl', is_admin: opts.admin !== false},
+    config: {time_zone: 'Europe/London'}, states, services,
+    callService: async (domain, service, data, target) => {
+      calls.push({domain, service, data, target});
+      if (opts.failSpeaker && domain === 'tts') throw new Error('boom');
+      if (domain === 'todo') {
+        if (service === 'add_item') store.items.push({uid: 'uid' + (++store.n), summary: data.item, description: data.description, status: 'needs_action'});
+        if (service === 'remove_item') { const ids = [].concat(data.item); store.items = store.items.filter(i => !ids.includes(i.uid)); }
+        if (service === 'update_item') { const it = store.items.find(i => i.uid === data.item); if (it) it.description = data.description; }
+        setTimeout(emit, 5);
+      }
+    },
+    callWS: async m => { calls.push({ws: m}); return {}; },
+    connection: {subscribeMessage: async (cb, m) => { calls.push({sub: m}); store.subs.push(cb); setTimeout(() => cb({items: JSON.parse(JSON.stringify(store.items))}), 5); return () => { store.subs = store.subs.filter(x => x !== cb); }; }},
+    fetchWithAuth: async () => ({ok: true, json: async () => ({id: 'abc123'})}),
+    hassUrl: u => u,
+  };
+};
+</script>
+<script src="../dist/ha-messenger-card.js"></script>
+</head><body><div id="host"></div><div id="ed"></div></body></html>

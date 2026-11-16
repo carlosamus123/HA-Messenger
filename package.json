@@ -1,0 +1,12 @@
+{
+  "name": "ha-messenger-card",
+  "version": "1.0.0",
+  "description": "Household messenger card for Home Assistant",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node build.mjs && node test/run.mjs"
+  }
+}
