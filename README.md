@@ -1,28 +1,42 @@
 # HA Messenger
 
-[![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/docs/faq/custom_repositories)
-[![Validate](https://github.com/carlosamus123/HA-Messenger/actions/workflows/validate.yml/badge.svg)](https://github.com/carlosamus123/HA-Messenger/actions/workflows/validate.yml)
-[![Ko-fi](https://img.shields.io/badge/Ko--fi-Support%20this%20project-FF5E5B?logo=ko-fi&logoColor=white)](https://ko-fi.com/northstarcreations)
+![HA Messenger: message anyone in the house, on their speaker or their phone](https://raw.githubusercontent.com/carlosamus123/HA-Messenger/main/docs/hero.jpg)
 
-A household messenger for Home Assistant. Send a message to someone and it's read out on their speaker when they're home, or pops up on their phone when they're out. Everything lives in one card, with no scripts, automations or helpers to set up.
+[![HACS](https://img.shields.io/badge/HACS-Custom-41BDF5.svg?style=for-the-badge)](https://hacs.xyz/docs/faq/custom_repositories)
+[![Release](https://img.shields.io/github/v/release/carlosamus123/HA-Messenger?style=for-the-badge)](https://github.com/carlosamus123/HA-Messenger/releases/latest)
+[![Validate](https://img.shields.io/github/actions/workflow/status/carlosamus123/HA-Messenger/validate.yml?branch=main&label=checks&style=for-the-badge)](https://github.com/carlosamus123/HA-Messenger/actions/workflows/validate.yml)
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-Support-FF5E5B?logo=ko-fi&logoColor=white&style=for-the-badge)](https://ko-fi.com/northstarcreations)
 
-<p align="center">
-  <img src="docs/desktop.png" width="720" alt="HA Messenger on a tablet">
-  <img src="docs/mobile.png" width="240" alt="HA Messenger on a phone">
-</p>
+**A household messenger for Home Assistant.** Send a message to someone and it's read out on their speaker when they're home, or pops up on their phone when they're out. It's all one card: no scripts, automations or helpers to build.
 
-## Features
+## ✨ Features
 
-- **Private chats** between everyone in the house. Each person logs in with their own Home Assistant account and the card works out who's sending.
-- **Speaker or phone automatically**: speaker when they're home, phone notification when they're out. Or pin it to one in the chat header.
-- **Group chat** to every speaker and phone at once, and **room chats** (Kitchen, Kids' room…) that speak on one speaker.
-- **Quiet hours**: speakers chime instead of talking (with [Chime TTS](https://github.com/nimroddolev/chime_tts)), or stay silent and send a phone alert instead. An **Urgent** button gets through anyway.
-- **Photos** (paste, drag and drop or pick), **voice notes**, **emoji reactions**, **read receipts** and unread badges.
-- **Quick replies** like "Dinner is ready".
-- Works on wall tablets, phones and desktop, in a dark messenger look or following your Home Assistant theme.
-- **Full visual editor**: pick people, speakers, phones and rooms from dropdowns. No YAML needed.
+| | |
+|---|---|
+| 💬 **Private chats** | Two-way chats between everyone in the house. Each person uses their own Home Assistant login, so the card knows who's talking. |
+| 🔊📱 **Speaker or phone, automatically** | Spoken on their speaker when they're home, a phone notification when they're out. Or pin it to one with a tap. |
+| 📢 **Group chat & rooms** | Message every speaker and phone at once, or a single room like the Kitchen. |
+| 🌙 **Quiet hours** | Speakers chime instead of talking (with Chime TTS), or stay silent and ping phones. **⚡ Urgent** gets through anyway. |
+| 📷 **Photos & 🎤 voice notes** | Paste, drag or pick photos (they're sent to phones too). Record voice notes right in the card. |
+| ❤️ **Reactions, read receipts & unread badges** | All the little touches you'd expect from a messaging app. |
+| 🎛️ **Full visual editor** | Pick people, speakers, phones and rooms from dropdowns. "Add all people" matches phones for you. No YAML. |
+| 🌗 **Looks at home anywhere** | Wall tablets, phones and desktop. Dark messenger style, or follow your Home Assistant theme. |
 
-## What you need
+## 📸 Screenshots
+
+**Private chat:** messages show where they went (speaker or phone), with reactions and "Seen".
+
+![Private chat on a tablet](https://raw.githubusercontent.com/carlosamus123/HA-Messenger/main/docs/desktop.jpg)
+
+**Group chat:** one message to every speaker and phone in the house.
+
+![Group chat](https://raw.githubusercontent.com/carlosamus123/HA-Messenger/main/docs/group.jpg)
+
+| On a phone | Following your HA theme |
+|:---:|:---:|
+| ![On a phone](https://raw.githubusercontent.com/carlosamus123/HA-Messenger/main/docs/mobile.jpg) | ![Light theme](https://raw.githubusercontent.com/carlosamus123/HA-Messenger/main/docs/theme.jpg) |
+
+## 🧰 What you need
 
 | | |
 |---|---|
@@ -32,7 +46,7 @@ A household messenger for Home Assistant. Send a message to someone and it's rea
 | Companion app (optional) | For phone notifications. |
 | Chime TTS (optional) | For a chime before messages, and chime-only quiet hours. Used automatically if installed. |
 
-## Install
+## 📦 Install
 
 ### HACS (recommended)
 
@@ -46,7 +60,7 @@ A household messenger for Home Assistant. Send a message to someone and it's rea
 
 Download `ha-messenger-card.js` from the [latest release](https://github.com/carlosamus123/HA-Messenger/releases/latest), copy it to `/config/www/`, then add `/local/ha-messenger-card.js` as a JavaScript module under Settings → Dashboards → ⋮ → Resources.
 
-## Set up
+## 🚀 Set up
 
 1. Create the **Local To-do** list (see above).
 2. Edit a dashboard → **Add card** → **HA Messenger**.
@@ -56,7 +70,7 @@ Download `ha-messenger-card.js` from the [latest release](https://github.com/car
 
 The card works best in a **Panel** view or as a full-width card. Set *Open this page from phone notifications* to that view's path (for example `/lovelace/messages`) so tapping a notification opens the chat.
 
-## YAML reference
+## 📝 YAML reference
 
 Everything in the visual editor can also be written by hand:
 
@@ -108,7 +122,7 @@ max_messages: 300                      # shown in the card
 retention_days: 90                     # older messages are deleted; 0 = keep forever
 ```
 
-## Good to know
+## 💡 Good to know
 
 - **Privacy.** Messages are stored as items in your to-do list. Anyone with a Home Assistant login can open that list and read them, so this is a family messenger, not a secret one. Photos are served from Home Assistant's image store using links that can't be guessed.
 - **Voice notes need an admin account.** Home Assistant only lets admins upload media, so the microphone button is hidden for other users. Notes are saved in your local media folder.
@@ -116,7 +130,7 @@ retention_days: 90                     # older messages are deleted; 0 = keep fo
 - **iPhone vs Android.** Notifications work on both. *Speak aloud on phone* is Android only; urgent messages use high priority on Android and time-sensitive alerts on iPhone.
 - **The to-do list.** Each message shows up there with a readable title (e.g. "Carl → Claire: Dinner is ready"). You can hide the list from the sidebar if you like. Don't rename item descriptions; that's where the message data lives.
 
-## Development
+## 🛠️ Development
 
 ```bash
 npm run build   # src/ → dist/ha-messenger-card.js
@@ -125,12 +139,14 @@ npm test        # build + browser tests (needs Playwright)
 
 Source lives in `src/` (`util.js`, `card.js`, `editor.js`, `styles.css`). Commit the rebuilt `dist/` file with your change. To release, bump `version` in `package.json`, rebuild, and push to `main`; the workflow tags it and publishes the GitHub release with the card attached.
 
-## Support
+## ☕ Support
 
-If HA Messenger is useful to your household, you can [buy me a coffee on Ko-fi](https://ko-fi.com/northstarcreations). ☕
+If HA Messenger is useful in your home, a coffee keeps it going:
 
-Bugs and ideas: [open an issue](https://github.com/carlosamus123/HA-Messenger/issues).
+[![Support me on Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/northstarcreations)
 
-## License
+Found a bug or have an idea? [Open an issue](https://github.com/carlosamus123/HA-Messenger/issues).
+
+## 📄 License
 
 MIT

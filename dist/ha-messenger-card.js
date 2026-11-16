@@ -339,6 +339,9 @@ const STYLES = `    :host { display:block; --bg:#0a131a; --panel:#0e1a22; --elev
     .setup .nm { color:var(--ink); font-size:20px; font-weight:700; }
     .setup p { margin:0; max-width:380px; line-height:1.5; font-size:14px; }
     .setup code { background:var(--elev); padding:1px 6px; border-radius:6px; color:var(--ink); }
+    :host([appearance="theme"]) #urgentBtn { background:rgba(0,0,0,.05); }
+    :host([appearance="theme"]) #urgentBtn .u-sw { background:rgba(0,0,0,.22); }
+    :host([appearance="theme"]) .pd { border-color:var(--panel); }
 `;
 // ---------------------------------------------------------------- the card
 class HaMessengerCard extends HTMLElement {
