@@ -11,7 +11,7 @@
 
 ## ✨ Features
 
-| | |
+| Feature | What it does |
 |---|---|
 | 💬 **Private chats** | Two-way chats between everyone in the house. Each person uses their own Home Assistant login, so the card knows who's talking. |
 | 🔊📱 **Speaker or phone, automatically** | Spoken on their speaker when they're home, a phone notification when they're out. Or pin it to one with a tap. |
