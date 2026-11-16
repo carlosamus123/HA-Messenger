@@ -1,9 +1,12 @@
 name: Release
 
-# Push a tag like v1.2.0 and this builds the card and publishes a GitHub release with it attached.
+# Bump "version" in package.json, run `npm run build`, commit and push to main.
+# This publishes a GitHub release vX.Y.Z with the built card attached (once per version).
 on:
   push:
-    tags: ["v*"]
+    branches: [main]
+    paths: [package.json]
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -16,14 +19,22 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Build with the tag's version
-        run: |
-          VERSION="${GITHUB_REF_NAME#v}"
-          node -e "const f='package.json';const p=require('./'+f);p.version='$VERSION';require('fs').writeFileSync(f,JSON.stringify(p,null,2)+'\n')"
-          node build.mjs
-      - name: Publish release
+      - name: Read version
+        id: v
+        run: echo "tag=v$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+      - name: Skip if already released
+        id: check
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "$GITHUB_REF_NAME" dist/ha-messenger-card.js \
-            --title "HA Messenger $GITHUB_REF_NAME" --generate-notes
+          if gh release view "${{ steps.v.outputs.tag }}" >/dev/null 2>&1; then echo "exists=true" >> "$GITHUB_OUTPUT"; else echo "exists=false" >> "$GITHUB_OUTPUT"; fi
+      - name: Build
+        if: steps.check.outputs.exists == 'false'
+        run: node build.mjs
+      - name: Publish release
+        if: steps.check.outputs.exists == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ steps.v.outputs.tag }}" dist/ha-messenger-card.js \
+            --target "$GITHUB_SHA" --title "HA Messenger ${{ steps.v.outputs.tag }}" --generate-notes

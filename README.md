@@ -123,7 +123,7 @@ npm run build   # src/ → dist/ha-messenger-card.js
 npm test        # build + browser tests (needs Playwright)
 ```
 
-Source lives in `src/` (`util.js`, `card.js`, `editor.js`, `styles.css`). Commit the rebuilt `dist/` file with your change. To release, push a tag like `v1.1.0`; the workflow builds the card and publishes the GitHub release.
+Source lives in `src/` (`util.js`, `card.js`, `editor.js`, `styles.css`). Commit the rebuilt `dist/` file with your change. To release, bump `version` in `package.json`, rebuild, and push to `main`; the workflow tags it and publishes the GitHub release with the card attached.
 
 ## Support
 
